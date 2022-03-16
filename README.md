@@ -1,4 +1,6 @@
 # Graph-based-factsheet
+![example](<./img/1.png>) 
+
 
 1- Install npm:
 
