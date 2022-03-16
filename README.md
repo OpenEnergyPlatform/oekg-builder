@@ -10,7 +10,7 @@
 
 - On windows see [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
-2-  Clone the repository and in the main directory, run the following commands:
+2-  Clone the repository and in the main directory run the following commands:
 
     npm install
     npm start
