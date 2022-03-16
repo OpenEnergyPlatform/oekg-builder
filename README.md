@@ -8,7 +8,8 @@
 
 - On windows see [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
-2-  Run the front-end, in the root directory (oekg-viewer)
+2-  Run the front-end, 
+    in the root directory (oekg-viewer)
 
     npm install
     npm start
