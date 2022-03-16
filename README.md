@@ -1,4 +1,4 @@
-# Run graph-based-factsheet
+# Graph-based-factsheet
 
 1- Install npm:
 
