@@ -1,4 +1,4 @@
-# Graph-based-factsheet
+# Graph-based-factsheets
 ![example](<./1.png>) 
 
 
