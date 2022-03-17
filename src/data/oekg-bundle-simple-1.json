@@ -1,0 +1,36 @@
+{
+  "nodes": [
+    {"id": "Framework", "group": 1, "size": 10, "color": "#EA77A9"},
+    {"id": "Model", "group": 1, "size": 10, "color": "#EA77A9"},
+    {"id": "Scenario A", "group": 2, "size": 10, "color": "#FAC8B2"},
+    {"id": "Scenario B", "group": 2, "size": 10, "color": "#FAC8B2"},
+    {"id": "Model Calculation", "group": 3, "size": 8, "color": "#deeaee"},
+    {"id": "Input Data", "group": 3, "size": 5, "color": "#96F4F4"},
+    {"id": "Output Data", "group": 3, "size": 5, "color": "#96F4F4"},
+    {"id": "FFS", "group": 4, "size": 5, "color": "#C9EA77"},
+    {"id": "MFS", "group": 4, "size": 5, "color": "#C9EA77"},
+    {"id": "SFS", "group": 4, "size": 5, "color": "#C9EA77"}
+  ],
+  "links": [
+    {"source": "Framework", "target": "Model", "value": 2, "curvature": 0.15, "arrowLength": 5},
+    {"source": "Framework", "target": "FFS", "value": 2, "curvature": 0.15, "arrowLength": 5},
+    {"source": "Model", "target": "Framework", "value": 2, "curvature": 0.1, "arrowLength": 5},
+    {"source": "Model", "target": "MFS", "value": 2, "curvature": 0.15, "arrowLength": 5},
+    {"source": "Model", "target": "Model Calculation", "value": 2, "curvature": 0.15, "arrowLength": 5},
+    {"source": "Model", "target": "Scenario A", "value": 2, "curvature": 0.15, "arrowLength": 5},
+    {"source": "Model", "target": "Scenario B", "value": 2, "curvature": 0.15, "arrowLength": 5},
+    {"source": "Scenario A", "target": "Model", "value": 2, "curvature": 0.15, "arrowLength": 5},
+    {"source": "Scenario A", "target": "Model Calculation", "value": 2, "curvature": 0.15, "arrowLength": 5},
+    {"source": "Scenario A", "target": "SFS", "value": 2, "curvature": 0.15, "arrowLength": 5},
+    {"source": "Scenario B", "target": "Model", "value": 2, "curvature": 0.15, "arrowLength": 5},
+    {"source": "Scenario B", "target": "SFS", "value": 2, "curvature": 0.15, "arrowLength": 5},
+    {"source": "Model Calculation", "target": "Model", "value": 2, "curvature": 0.15, "arrowLength": 5},
+    {"source": "Model Calculation", "target": "Output Data", "value": 2, "curvature": 0.15, "arrowLength": 5},
+    {"source": "Model Calculation", "target": "Scenario A", "value": 2, "curvature": 0.15, "arrowLength": 5},
+    {"source": "Input Data", "target": "Model Calculation", ",value": 2, "curvature": 0.15, "arrowLength": 5},
+    {"source": "FFS", "target": "MFS", "value": 1, "curvature": 0.15, "arrowLength": 5},
+    {"source": "MFS", "target": "FFS", "value": 1, "curvature": 0.15, "arrowLength": 5},
+    {"source": "MFS", "target": "SFS", "value": 1, "curvature": 0.15, "arrowLength": 5},
+    {"source": "SFS", "target": "MFS", "value": 1, "curvature": 0.15, "arrowLength": 5}
+  ]
+}
