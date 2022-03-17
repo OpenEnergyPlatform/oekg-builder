@@ -1,0 +1,17 @@
+{
+  "nodes": [
+    {"id": "One", "group": 1, "size": 10, "color": "#EA77A9"},
+    {"id": "Two", "group": 1, "size": 10, "color": "#EA77A9"},
+    {"id": "Three", "group": 1, "size": 10, "color": "#EA77A9"},
+    {"id": "Four", "group": 2, "size": 5, "color": "#deeaee"},
+    {"id": "Five", "group": 2, "size": 5, "color": "#96F4F4"}
+  ],
+  "links": [
+    {"source": "One", "target": "Two", "value": 2, "curvature": 0.2, "arrowLength": 5},
+    {"source": "One", "target": "Three", "value": 2, "curvature": 0.1, "arrowLength": 5},
+    {"source": "One", "target": "Four", "value": 1, "curvature": 0.3, "arrowLength": 5},
+    {"source": "Two", "target": "One", "value": 2, "curvature": 0.2, "arrowLength": 5},
+    {"source": "Two", "target": "Five", "value": 2, "curvature": 0.15, "arrowLength": 5},
+    {"source": "Three", "target": "One", "value": 2, "curvature": 0.1, "arrowLength": 5}
+  ]
+}
