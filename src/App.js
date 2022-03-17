@@ -15,7 +15,8 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
-import GraphData from "./data/oekg-1.json";
+import GraphData from "./data/oekg-bundle-simple-1.json";
+// oekg-1.json oekg-example-simple-1.json
 
 function App() {
 
