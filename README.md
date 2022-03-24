@@ -1,6 +1,6 @@
 # Graph-based-factsheets
-![example](<./1.png>) 
-
+![example1](<./1.png>) 
+![example2](<./2.png>) 
 
 1- Install npm:
 
