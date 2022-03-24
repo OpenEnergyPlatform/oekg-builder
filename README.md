@@ -1,9 +1,11 @@
 # Graph-based-factsheets
 
-An example graph for a study factsheet
+An example graph for a study factsheet:
 ![example1](<./1.png>) 
 
-An example graph for a bundle
+
+
+An example graph for a bundle:
 ![example2](<./2.png>) 
 
 1- Install npm:
