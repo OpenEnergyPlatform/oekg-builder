@@ -1,9 +1,5 @@
 # Graph-based-factsheets
 
-A study factsheet           |  A bundle
-:-------------------------:|:-------------------------:
-![example1](<./1.png>)  |  ![example2](<./2.png>)
-
 1- Install npm:
 
 - On linux: `sudo apt install npm`
