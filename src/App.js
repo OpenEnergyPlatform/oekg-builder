@@ -18,7 +18,7 @@ import Typography from '@mui/material/Typography';
 import GraphData from "./data/oekg-1.json";
 
 function App() {
-
+  const { useRef, useCallback } = React;
   const [oekg, setOekg] = React.useState(GraphData);
   const [relation, setRelation] = React.useState('');
   const [concept, setConcept] = React.useState('');
@@ -29,6 +29,20 @@ function App() {
 
   const handleConceptChange = (event) => {
     setConcept(event.target.value);
+  };
+
+  const fgRef = useRef();
+
+  const handleClick = node => {
+    const distance = 40;
+    const distRatio = 1 + distance/Math.hypot(node.x, node.y, node.z);
+
+    fgRef.current.centerAt(
+    node.x,
+    node.y,
+    200
+    );
+    fgRef.current.zoom(50, 500);
   };
 
 
@@ -154,20 +168,41 @@ function App() {
                     ctx.font = `Bold ${fontSize}px Tahoma`;
                     ctx.fillStyle = node.size ? node.color : '#deeaee';
 
+                    // circle
+                    // ctx.beginPath();
+                    // ctx.arc(node.x, node.y, node.size, 0, 2 * Math.PI);
+                    // ctx.stroke();
+                    // ctx.fill();
+
+                    // hexagon
+                    var numberOfSides = 6,
+                        size = node.size,
+                        Xcenter = node.x,
+                        Ycenter = node.y;
+
                     ctx.beginPath();
-                    ctx.arc(node.x, node.y, node.size, 0, 2 * Math.PI);
-                    ctx.stroke();
-                    ctx.fill();
+                    ctx.moveTo (Xcenter +  size * Math.cos(0), Ycenter +  size *  Math.sin(0));
+
+                    for (var i = 1; i <= numberOfSides;i += 1) {
+                      ctx.lineTo (Xcenter + size * Math.cos(i * 2 * Math.PI / numberOfSides), Ycenter + size * Math.sin(i * 2 * Math.PI / numberOfSides));
+                      ctx.lineJoin = 'round';
+
+                    }
+                    ctx.closePath();
 
                     ctx.textAlign = "center";
                     ctx.textBaseline = "middle";
-                    ctx.fillStyle =  "#034f84";
-                    ctx.strokeStyle = "#00688B";
+                    ctx.fillStyle = node.size ? node.color : '#deeaee';
+
+                    ctx.strokeStyle = "#D9F4FC";
                     ctx.lineWidth = 2;
+                    ctx.stroke();
+                    ctx.fill();
 
                     const label = node.id;
                     var lines = label.split(" ");
 
+                    ctx.fillStyle = "#00688B";
                     if (lines.length == 1) {
                       ctx.fillText(lines[0], node.x, node.y )
                     } else {
@@ -200,14 +235,14 @@ function App() {
                     );
                 }}
 
-                linkDirectionalArrowLength={(link) => link.arrowLength}
-                linkDirectionalArrowRelPos={0.5}
+                //linkDirectionalArrowLength={(link) => link.arrowLength}
+                linkDirectionalArrowRelPos={0.4}
                 linkWidth={(link) => link.value}
                 linkResolution={20}
                 linkColor={() => "#00688B"}
-                linkCurvature={(link) => link.curvature}
-
-
+                //linkCurvature={(link) => link.curvature }
+                ref={fgRef}
+                onNodeClick={node => handleClick(node)}
                 d3VelocityDecay={0.01}
                 cooldownTicks={100}
                 onNodeDragEnd={node => {
