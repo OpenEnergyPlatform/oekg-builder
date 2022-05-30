@@ -1,0 +1,84 @@
+[
+  {
+    "class": "OEO:00020011",
+    "relations": [
+      {
+        "relation_type": "RO:0000057",
+        "relation_label": "has participant",
+        "target_classes": [
+          {
+            "class": "IAO:0000100",
+            "label": "data set",
+            "definition": "A data item that is an aggregate of other data items of the same type that have something in common. Averages and distributions can be determined for data sets."
+          }
+        ]
+      },
+      {
+        "relation_type": "OEO:00000522",
+        "relation_label": "covers",
+        "target_classes": [
+          {
+            "class": "OEO:00020072",
+            "label": "analysis scope",
+            "definition": "An analysis scope is an information content entity that describes the boundaries of what a study or scenario covers."
+          }
+        ]
+      }
+    ],
+    "label": "study",
+    "definition": "A study is a project with the goal to investigate something."
+  },
+  {
+    "class": "OEO:00020072",
+    "relations": [
+      {
+        "relation_type": "IAO:0000136",
+        "relation_label": "is about",
+        "target_classes": [
+          {
+            "class": "OEO:00020032",
+            "label": "study region",
+            "definition": "A study region is a spatial region that is under investigation and consists entirely of one or more subregions."
+          },
+          {
+            "class": "OEO:00000367",
+            "label": "sector",
+            "definition": "A sector is generically dependent continuant that is a subdivision of a system."
+          }
+        ]
+      }
+    ],
+    "label": "analysis scope",
+    "definition": "An analysis scope is an information content entity that describes the boundaries of what a study or scenario covers."
+  },
+  {
+    "class": "OEO:00000364",
+    "relations": [
+      {
+        "relation_type": "IAO:0000136",
+        "relation_label": "is about",
+        "target_classes": [
+          {
+            "class": "OEO:00020072",
+            "label": "analysis scope",
+            "definition": "An analysis scope is an information content entity that describes the boundaries of what a study or scenario covers."
+          }
+        ]
+      }
+    ],
+    "label": "scenario",
+    "definition": "A scenario is an information content entity that contains statements about a possible future development based on a coherent and internally consistent set of assumptions and their motivation."
+  },
+  {
+    "class": "OEO:00000064",
+    "relations": [
+      {
+        "relation_type": "",
+        "relation_label": "",
+        "target_classes": [{}]
+      }
+    ],
+    "label": "author",
+    "definition": "An author is an agent that creates or has created written work."
+  }
+]

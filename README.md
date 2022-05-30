@@ -1,5 +1,4 @@
-
-# Graph-based-factsheets
+# Run graph-based-factsheet
 
 1- Install npm:
 
@@ -9,10 +8,10 @@
 
 - On windows see [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
-2-  Clone the repository and in the main directory run the following commands:
+2-  Run the front-end:
 
+    cd oekg-viewer
     npm install
     npm start
 
 You can define new nodes and links inside `oekg-viewer/src/data/oekg-1.json`.
-

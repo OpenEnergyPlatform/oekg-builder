@@ -1,32 +1,14 @@
 {
   "nodes": [
-    {"id": "Study", "group": 1, "size": 15, "color": "#deeaee"},
-    {"id": "Scenario", "group": 1, "size": 15, "color": "#deeaee"},
-    {"id": "Model", "group": 1, "size": 15, "color": "#deeaee"},
-    {"id": "Model Calculation", "group": 2, "size": 10, "color": "#deeaee"},
-    {"id": "Dataset", "group": 2, "size": 10, "color": "#deeaee"},
-    {"id": "Scenario year", "group": 3, "size": 10, "color": "#deeaee"},
-    {"id": "Analysis scope", "group": 3, "size": 10, "color": "#deeaee"},
-    {"id": "Scenario horizon", "group": 3, "size": 10, "color": "#deeaee"},
-    {"id": "Author", "group": 3, "size": 10, "color": "#deeaee"},
-    {"id": "Sector", "group": 3, "size": 10, "color": "#deeaee"},
-    {"id": "Study region", "group": 3, "size": 10, "color": "#deeaee"}
+    {"class": "OEO:00020011", "name": "study", "id": "New_Study", "definition": "A study is a project with the goal to investigate something."},
+    {"class": "OEO:00000064", "name": "author", "id": "New_Author", "definition": "An author is an agent that creates or has created written work."},
+    {"class": "OEO:00000364", "id": "KSz_2050_Scenario", "name": "scenario", "definition": "A scenario is an information content entity that contains statements about a possible future development based on a coherent and internally consistent set of assumptions and their motivation."},
+    {"class": "OEO:00020072", "id": "KSz_2050_Analysis_scope", "name": "analysis scope", "definition": "An analysis scope is an information content entity that describes the boundaries of what a study or scenario covers."}
+
   ],
   "links": [
-    {"source": "Dataset", "target": "Study", "value": 2, "curvature": 0.15, "arrowLength": 4},
-    {"source": "Dataset", "target": "Scenario year", "value": 2, "curvature": 0.15, "arrowLength": 4},
-    {"source": "Dataset", "target": "Model Calculation", "value": 4, "curvature": 0.2, "arrowLength": 6},
-    {"source": "Scenario year", "target": "Scenario horizon", "value": 2, "curvature": 0.15, "arrowLength": 4},
-    {"source": "Study", "target": "Dataset", "value": 2, "curvature": 0.15, "arrowLength": 4},
-    {"source": "Study", "target": "Author", "value": 2, "curvature": 0.15, "arrowLength": 4},
-    {"source": "Scenario", "target": "Model", "value": 2, "curvature": 0.15, "arrowLength": 4},
-    {"source": "Model", "target": "Scenario", "value": 2, "curvature": 0.15, "arrowLength": 4},
-    {"source": "Model", "target": "Model Calculation", "value": 2, "curvature": 0.15, "arrowLength": 4},
-    {"source": "Model Calculation", "target": "Dataset", "value": 4, "curvature": 0.2, "arrowLength": 6},
-    {"source": "Model Calculation", "target": "Model", "value": 2, "curvature": 0.15, "arrowLength": 4},
-    {"source": "Scenario", "target": "Analysis scope", "value": 2, "curvature": 0.15, "arrowLength": 4},
-    {"source": "Study", "target": "Analysis scope", "value": 2, "curvature": 0.15, "arrowLength": 4},
-    {"source": "Analysis scope", "target": "Sector", "value": 2, "curvature": 0.15, "arrowLength": 4},
-    {"source": "Analysis scope", "target": "Study region", "value": 2, "curvature": 0.15, "arrowLength": 4}
+      {"class": "OEO:00000506", "source": "New_Study", "target": "New_Author", "value": 2, "name": "has_author"},
+      {"class": "OEO:00000506", "source": "New_Study", "target": "KSz_2050_Analysis_scope", "value": 2, "name": "has_author"},
+      {"class": "OEO:00000506", "source": "KSz_2050_Scenario", "target": "KSz_2050_Analysis_scope", "value": 2, "name": "has_author"}
   ]
 }

@@ -1,0 +1,27 @@
+{
+  "nodes": [
+    {"class": "OEO:00020011", "name": "KSz_2050_Study", "id": "study", "group": 1, "size": 15, "color": ["#31B20A", "#B20A42"], "definition": "A study is a project with the goal to investigate something."},
+    {"class": "OEO:00000364", "name": "KSz_2050_Scenario", "id": "scenario", "group": 1, "size": 15, "color": ["#31B20A", "#B20A42"], "definition": "A scenario is an information content entity that contains statements about a possible future development based on a coherent and internally consistent set of assumptions and their motivation."},
+    {"class": "OEO:00000274", "name": "KSz_2050_Model", "id": "model", "group": 1, "size": 15, "color": ["#BB436B", "#B20A42"], "definition": "A model is a generically dependent continuant that is used for computing an idealised reproduction of a system and its behaviours."},
+    {"class": "OEO:00000275", "name": "KSz_2050_Model_Calculation", "id": "model calculation", "group": 2, "size": 10, "color": ["#BB436B", "#B20A42"], "definition": "A model calculation is a process of solving mathematical equations of a model."},
+    {"class": "IAO:0000100", "name": "KSz_2050_Dataset", "id": "dataset", "group": 2, "size": 10, "color": ["#43BB6D", "#B20A42"], "definition": "A data item that is an aggregate of other data items of the same type that have something in common. Averages and distributions can be determined for data sets."},
+    {"class": "OEO:00020097", "name": "KSz_2050_Scenario_year", "id": "scenario year", "group": 3, "size": 10, "color": ["#43BB6D", "#B20A42"], "definition": "A scenario year is a time step that has a duration of one year and is part of a scenario horizon."},
+    {"class": "OEO:00020072", "name": "KSz_2050_Analysis_scope", "id": "analysis scope", "group": 3, "size": 10, "color": ["#43BB6D", "#B20A42"], "definition": "An analysis scope is an information content entity that describes the boundaries of what a study or scenario covers."},
+    {"class": "OEO:00020098", "name": "KSz_2050_Scenario_horizon", "id": "scenario horizon", "group": 3, "size": 10, "color": ["#31B20A", "#B20A42"], "definition": "A study region is a spatial region that is under investigation and consists entirely of one or more subregions."},
+    {"class": "OEO:00000064", "name": "KSz_2050_Author", "id": "author", "group": 3, "size": 10, "color": ["#B20A42", "#B20A42"], "definition": "An author is an agent that creates or has created written work."},
+    {"class": "OEO:00000367", "name": "KSz_2050_Sector", "id": "sector", "group": 3, "size": 10, "color": ["#31B20A", "#B20A42"], "definition": "A sector is generically dependent continuant that is a subdivision of a system."}
+  ],
+  "links": [
+    {"class": "RO:0000057", "source": "study", "target": "dataset", "value": 2, "curvature": 0.0, "arrowLength": 4, "name": "has participant"},
+    {"class": "IAO:0000136", "source": "dataset", "target": "scenario year", "value": 2, "curvature": 0.0, "arrowLength": 4, "name": "is about"},
+    {"class": "BFO:0000050", "source": "scenario year", "target": "scenario horizon", "value": 2, "curvature": 0.0, "arrowLength": 4, "name": "part of"},
+    {"class": "OEO:00000506", "source": "study", "target": "author", "value": 2, "curvature": 0.0, "arrowLength": 4, "name": "has_author"},
+    {"class": "OEO:00000503", "source": "scenario", "target": "model", "value": 2, "curvature": 0.0, "arrowLength": 4, "name": "uses"},
+    {"class": "RO:0000057", "source": "model", "target": "model calculation", "value": 2, "curvature": 0.0, "arrowLength": 4, "name": "has participant"},
+    {"class": "RO:0002233", "source": "model calculation", "target": "dataset", "value": 4, "curvature": 0.1, "arrowLength": 6, "name": "has input"},
+    {"class": "RO:0002234", "source": "model calculation", "target": "dataset", "value": 4, "curvature": 0.1, "arrowLength": 6, "name": "has output"},
+    {"class": "IAO:0000136", "source": "scenario", "target": "analysis scope", "value": 2, "curvature": 0.0, "arrowLength": 4, "name": "is about"},
+    {"class": "OEO:00000522", "source": "study", "target": "analysis scope", "value": 2, "curvature": 0.0, "arrowLength": 4, "name": "covers"},
+    {"class": "IAO:0000136", "source": "analysis scope", "target": "sector", "value": 2, "curvature": 0.0, "arrowLength": 4, "name": "is about"}
+  ]
+}
