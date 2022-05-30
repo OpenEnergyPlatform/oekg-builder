@@ -12,7 +12,7 @@ The oekg-builder, provides a simple way for OEP users to make RDF-based factshee
 
 2-  Run the front-end:
 
-    cd oekg-viewer
+    cd oekg-builder
     npm install
     npm start
 
