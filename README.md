@@ -1,5 +1,4 @@
-# Disclaimer: this tool is a work in progress. 
-It means some features are not fully implemented yet.
+Disclaimer: this tool is a work in progress. It means some features are not fully implemented yet.
 
 1- Install npm:
 
