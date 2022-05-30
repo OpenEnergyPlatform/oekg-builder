@@ -1,5 +1,4 @@
-# Disclaimer
-This tool is a work in progress. It means some features are not fully implemented yet.
+** Disclaimer: This tool is a work in progress. It means some features are not fully implemented yet.
 
 The oekg-builder, provides a simple way for OEP users to make RDF-based factsheets through a user-interface. 
 
