@@ -52,8 +52,7 @@ export default function CustomSearchInput(props) {
       renderOption={(option) => option.name}
       freeSolo
       renderInput={(params) => (
-        <TextField style={{ 'marginTop' : '20px', 'marginLeft' : '30%', 'width': '35%', 'marginRight' : '30px',
-                            'zIndex': '1000',
+        <TextField style={{ 'marginTop' : '15px',  'marginLeft' : '15px',  'margiRight' : '15px', 'margiBottom' : '30px', 'float': 'right', 'width': '80%', 'zIndex': '1000'
                            }}
                    color="success"
                    {...params}

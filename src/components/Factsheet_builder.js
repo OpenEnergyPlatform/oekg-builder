@@ -36,6 +36,8 @@ import '../styles/App.css';
 
 import OEKG_Schema from "../data/oekg-schema.json";
 
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+
 function Factsheet(props) {
   const { useRef } = React;
   const { graphData } = props;
@@ -58,10 +60,11 @@ function Factsheet(props) {
   const [x, setX] = React.useState(0);
   const [y, setY] = React.useState(0);
   const [cooldownTicks, setCooldownTicks] = React.useState(1000);
-  const [mode, setMode] = React.useState("playground");
+  const [mode, setMode] = React.useState("wizard");
   const [treeViewData, setTreeViewData] = React.useState({});
   const [expanded, setExpanded] = React.useState(["study"]);
-
+  const [loading, setLoading] = React.useState(false);
+  const [enablePlaygroundMode, setEnablePlaygroundMode] = React.useState(true);
   const theme = useTheme();
 
   const handleNewLabelChange = (event) => {
@@ -155,7 +158,7 @@ function Factsheet(props) {
   };
 
   const handleRightClick = node => {
-    let current_node_info = OEKG_Schema.find( el => el.class == node.class);
+    let current_node_info = OEKG_Schema.find( el => el.class === node.class);
     let current_node_relations = current_node_info["relations"].map(el => el.relation_type);
     setRelations(current_node_relations);
     setCurrentNode(node);
@@ -220,7 +223,7 @@ function Factsheet(props) {
         if (currentNode === false) {
           const rootNode = oekg.nodes.find(node => node.class === "OEO:00020011");
           setCurrentNode(rootNode);
-          let current_node_info = OEKG_Schema.find( el => el.class == "OEO:00020011");
+          let current_node_info = OEKG_Schema.find( el => el.class === "OEO:00020011");
           let current_node_relations = current_node_info["relations"].map(el => el.relation_type);
           setRelations(current_node_relations);
         }
@@ -245,10 +248,18 @@ function Factsheet(props) {
     const rootNode = allNodes.find(node => node.class === "OEO:00020011");
     let treeData = [];
     allLinks.forEach(link => {
-      const sourceName = allNodes.find(node => node.id === link.source.id);
-      const targetName = allNodes.find(node => node.id === link.target.id);
-      if (sourceName !== undefined && targetName !== undefined)
-         treeData.push({'id': link.target.id, 'parent': link.source.id, 'name': targetName['name']});
+      if(typeof link.source == "string") {
+        const sourceName = allNodes.find(node => node.id === link.source);
+        const targetName = allNodes.find(node => node.id === link.target);
+        if (sourceName !== undefined && targetName !== undefined)
+           treeData.push({'id': link.target, 'parent': link.source, 'name': targetName['name']});
+      }
+      if(typeof link.source == "object") {
+        const sourceName = allNodes.find(node => node.id === link.source.id);
+        const targetName = allNodes.find(node => node.id === link.target.id);
+        if (sourceName !== undefined && targetName !== undefined)
+           treeData.push({'id': link.target.id, 'parent': link.source.id, 'name': targetName['name']});
+      }
       }
     );
 
@@ -265,19 +276,31 @@ function Factsheet(props) {
     }
 
     const rootChildren = findFor(rootNode.id);
+
     const treeViewData = {
       'id': rootNode.id,
       'parent': '',
       'name': 'study',
       'children': rootChildren
     }
-
-    console.log(treeViewData);
     setTreeViewData(treeViewData);
+    setLoading(true);
     }
 
+    const useTreeItemStyles = makeStyles({
+      label: {
+        fontWeight: "bold"
+      }
+    });
+    const useStyles = makeStyles({
+      label: {
+        color: "#1a5590",
+        fontWeight: "bold !important"
+      }
+    });
+    const classes = useStyles();
     const renderTree = (nodes: RenderTree) => (
-      <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
+      <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name} classes={{ label: classes.label }} >
         {Array.isArray(nodes.children)
           ? nodes.children.map((node) => renderTree(node))
           : null}
@@ -306,26 +329,39 @@ function Factsheet(props) {
       updated_oekg["links"].push(newLink);
       setOekg({ ...updated_oekg });
       setSelectedRelation("");
+      prepareData();
       setCooldownTicks(1000);
     }
 
+    React.useEffect(() => {
+        prepareData();
+    },  [loading]);
 
-  return (
+    return (
       <div >
         <Grid container spacing={2} >
-          <Grid item xs={12} className="bg_img">
-            <div style={{ 'borderBottom' : '1px solid rgba(0, 0, 0, 0.3)' }}>
-              <CustomSearchInput searchHandler={searchHandler} data={oekg.nodes} />
-               <span style={{ 'marginBottom' : '15px',  'marginLeft' : '30%', 'marginRight' : '10px', 'zIndex': '1000' }} >
-                <CustomSwap handleSwap={handleSwap} />
-               </span >
-              {mode === "playground" && <Button disableElevation={true} startIcon={<CenterFocusWeakIcon />} size="medium" style={{ 'textTransform': 'none', 'marginBottom' : '15px',  'marginLeft' : '2.1%', 'marginRight' : '10px', 'zIndex': '1000'}} variant="outlined" color="primary" onClick={resetView} >View all</Button>}
-              <Button disableElevation={true} startIcon={<DraftsIcon />} size="medium" style={{ 'textTransform': 'none', 'marginBottom' : '15px', 'marginLeft' : '0.1%', 'zIndex': '1000' }} variant="outlined" color="primary" onClick={handleSaveJSON} >Save as a draft</Button>
-              <Button disableElevation={true} startIcon={<AddBoxIcon />} size="medium" style={{ 'textTransform': 'none', 'marginBottom' : '15px', 'marginLeft' : '0.5%', 'zIndex': '1000' }} variant="contained" color="primary" onClick={handleClickOpenTurtle}>Add to OEKG</Button>
+          <Grid item xs={5} >
+            <CustomSearchInput searchHandler={searchHandler} data={oekg.nodes} />
+          </Grid>
+          <Grid item xs={3} >
+          <div>
+             {enablePlaygroundMode &&
+               <CustomSwap handleSwap={handleSwap} />
+             }
+            {mode === "playground" && <Button disableElevation={true} startIcon={<CenterFocusWeakIcon />} size="large" style={{ 'textTransform': 'none', 'zIndex': '1000', 'marginTop': '-15px', 'marginLeft': '2%', 'zIndex': '1000', 'height': '55px'}} variant="outlined" color="primary" onClick={resetView} >View all</Button>}
+          </div >
+          </Grid>
+          <Grid item xs={4} >
+            <div>
+              <Button disableElevation={true} startIcon={<DraftsIcon />} size="large" style={{ 'textTransform': 'none', 'marginTop': '15px', 'marginLeft': '15%', 'zIndex': '1000', 'height': '55px' }} variant="outlined" color="primary" onClick={handleSaveJSON} >Save as a draft</Button>
+              <Button disableElevation={true} startIcon={<AddBoxIcon />} size="large" style={{ 'textTransform': 'none', 'marginTop': '15px', 'marginLeft': '2%', 'zIndex': '1000', 'height': '55px'  }} variant="contained" color="primary" onClick={handleClickOpenTurtle}>Add to OEKG</Button>
             </div >
+          </Grid>
+
+          <Grid item xs={12}>
             <Dialog
               fullWidth
-              maxWidth="lg"
+              maxWidth="sm"
               open={openTurtle}
               onClose={handleClickOpenTurtle}
               aria-labelledby="responsive-dialog-title"
@@ -335,53 +371,11 @@ function Factsheet(props) {
               </DialogTitle>
               <DialogContent>
                 <DialogContentText>
-                  <div><pre style={{   "fontSize": "12px" }}>
-                    {`
-@prefix OEO: <http://openenergy-platform.org/ontology/oeo/> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-
-<http://openenergy-platform.org/ontology/oekg/KSz_2050_Scenario> a <http://openenergy-platform.org/ontology/oeo/OEO:00000364> ;
-    rdfs:label "KSz_2050_Scenario" ;
-    OEO:00000503 <http://openenergy-platform.org/ontology/oekg/KSz_2050_Model> ;
-    OEO:0000136 <http://openenergy-platform.org/ontology/oekg/KSz_2050_Analysis_scope> .
-
-<http://openenergy-platform.org/ontology/oekg/KSz_2050_Study> a <http://openenergy-platform.org/ontology/oeo/OEO:00020011> ;
-    rdfs:label "KSz_2050_Study" ;
-    OEO:00000506 <http://openenergy-platform.org/ontology/oekg/KSz_2050_Author> ;
-    OEO:00000522 <http://openenergy-platform.org/ontology/oekg/KSz_2050_Analysis_scope> ;
-    OEO:0000057 <http://openenergy-platform.org/ontology/oekg/KSz_2050_Dataset> .
-
-<http://openenergy-platform.org/ontology/oekg/KSz_2050_Author> a <http://openenergy-platform.org/ontology/oeo/OEO:00000064> ;
-    rdfs:label "KSz_2050_Author" .
-
-<http://openenergy-platform.org/ontology/oekg/KSz_2050_Model> a <http://openenergy-platform.org/ontology/oeo/OEO:00000274> ;
-    rdfs:label "KSz_2050_Model" ;
-    OEO:0000057 <http://openenergy-platform.org/ontology/oekg/KSz_2050_Model_Calculation> .
-
-<http://openenergy-platform.org/ontology/oekg/KSz_2050_Model_Calculation> a <http://openenergy-platform.org/ontology/oeo/OEO:00000275> ;
-    rdfs:label "KSz_2050_Model_Calculation" ;
-    OEO:0002233 <http://openenergy-platform.org/ontology/oekg/KSz_2050_Dataset> ;
-    OEO:0002234 <http://openenergy-platform.org/ontology/oekg/KSz_2050_Dataset> .
-
-<http://openenergy-platform.org/ontology/oekg/KSz_2050_Scenario_horizon> a <http://openenergy-platform.org/ontology/oeo/OEO:00020098> ;
-    rdfs:label "KSz_2050_Scenario_horizon" .
-
-<http://openenergy-platform.org/ontology/oekg/KSz_2050_Scenario_year> a <http://openenergy-platform.org/ontology/oeo/OEO:00020097> ;
-    rdfs:label "KSz_2050_Scenario_year" ;
-    OEO:0000050 <http://openenergy-platform.org/ontology/oekg/KSz_2050_Scenario_horizon> .
-
-<http://openenergy-platform.org/ontology/oekg/KSz_2050_Sector> a <http://openenergy-platform.org/ontology/oeo/OEO:00000367> ;
-    rdfs:label "KSz_2050_Sector" .
-
-<http://openenergy-platform.org/ontology/oekg/KSz_2050_Analysis_scope> a <http://openenergy-platform.org/ontology/oeo/OEO:00020072> ;
-    rdfs:label "KSz_2050_Analysis_scope" ;
-    OEO:0000136 <http://openenergy-platform.org/ontology/oekg/KSz_2050_Sector> .
-
-<http://openenergy-platform.org/ontology/oekg/KSz_2050_Dataset> a <http://openenergy-platform.org/ontology/oeo/IAO:0000100> ;
-    rdfs:label "KSz_2050_Dataset" ;
-    OEO:0000136 <http://openenergy-platform.org/ontology/oekg/KSz_2050_Scenario_year> .
-                      `}
-                  </pre></div>
+                  <div>
+                    <pre>
+                      Open Energy Knowledge Graph
+                    </pre>
+                  </div>
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
@@ -469,7 +463,7 @@ function Factsheet(props) {
 
                 {nodeContextIsVisible && <div className='context-menu' style={style}>
                     <div className='context-menu__item'>
-                      Add new fact about this <i><b>{ currentNode.id.length > 25 ? currentNode.id.substring(0, 25) + "..." : currentNode.id }</b></i>
+                      Add new fact about { currentNode.id.length > 25 ? currentNode.id.substring(0, 25) + "..." : currentNode.id }
                     </div>
 
                     <div className='context-menu__item'>
@@ -484,7 +478,7 @@ function Factsheet(props) {
                         >
                           {relations.map((el, idx)  =>
                             {
-                                let current_node_info = OEKG_Schema.find(el => el.class == currentNode.class);
+                                let current_node_info = OEKG_Schema.find(el => el.class === currentNode.class);
                                 const element = current_node_info.relations.find(entry => entry.relation_type === el)["relation_label"];
                                 return (<MenuItem key={idx} value={el} > {element !== undefined ? element : el} </MenuItem>)
                             }
@@ -504,7 +498,7 @@ function Factsheet(props) {
                         >
                           {concepts.map((el, idx)  =>
                             {
-                              let current_node_info = OEKG_Schema.find( el => el.class == currentNode.class);
+                              let current_node_info = OEKG_Schema.find( el => el.class === currentNode.class);
                               let element = "";
                               if(selectedRelation !== "") {
                                 let target_classes = current_node_info.relations.find(entry => entry.relation_type === selectedRelation)["target_classes"];
@@ -524,7 +518,7 @@ function Factsheet(props) {
                             size="small"
                             disabled={factHasLabel}
                             onClick={() => {
-                            let current_node_info = OEKG_Schema.find( el => el.class == currentNode.class);
+                            let current_node_info = OEKG_Schema.find( el => el.class === currentNode.class);
                             let target_classes = current_node_info.relations.find(entry => entry.relation_type === selectedRelation)["target_classes"];
                             const element = target_classes.find(entry => entry.label === selectedConcept.label);
 
@@ -716,7 +710,7 @@ function Factsheet(props) {
                               defaultCollapseIcon={<ExpandMoreIcon />}
                               defaultExpanded={[]}
                               defaultExpandIcon={<ChevronRightIcon />}
-                              sx={{ height: "500px", flexGrow: 1, overflow: 'auto' }}
+                              sx={{ height: "740px", flexGrow: 1, overflow: 'auto' }}
                               onNodeSelect={handleTreeViewSelect}
                             >
                               {renderTree(treeViewData)}
@@ -725,7 +719,7 @@ function Factsheet(props) {
                         </Grid>
                         <Grid item xs={7}>
                           {
-                            <Paper style={{ 'margin': '5px', "height": "500px", "padding": "20px" }}>
+                            <Paper style={{ 'margin': '5px', "height": "700px", "padding": "20px"  }}>
                               <Grid container spacing={0}  >
                                 <Grid item xs={8}>
                                   <Typography variant="subtitle2" gutterBottom component="div">
@@ -750,12 +744,15 @@ function Factsheet(props) {
                                           label="Age"
                                           style= {{ 'width': '220px', 'height': '30px' }}
                                         >
-                                          {relations.map((el, idx)  =>
-                                            {
-                                                let current_node_info = OEKG_Schema.find(el => el.class == currentNode.class);
-                                                const element = current_node_info.relations.find(entry => entry.relation_type === el)["relation_label"];
-                                                return (<MenuItem key={idx} value={el} > {element !== undefined ? element : el} </MenuItem>)
-                                            }
+                                          {
+                                            relations.map((el, idx)  =>
+                                              {
+                                                  if (currentNode !== false) {
+                                                    let current_node_info = OEKG_Schema.find(el => el.class === currentNode.class);
+                                                    const element = current_node_info.relations.find(entry => entry.relation_type === el)["relation_label"];
+                                                    return (<MenuItem key={idx} value={el} > {element !== undefined ? element : el} </MenuItem>)
+                                                  }
+                                              }
                                           )}
                                         </Select>
                                       </div>
@@ -773,7 +770,7 @@ function Factsheet(props) {
                                           >
                                             {concepts.map((el, idx)  =>
                                               {
-                                                let current_node_info = OEKG_Schema.find( el => el.class == currentNode.class);
+                                                let current_node_info = OEKG_Schema.find( el => el.class === currentNode.class);
                                                 let element = "";
                                                 if(selectedRelation !== "") {
                                                   let target_classes = current_node_info.relations.find(entry => entry.relation_type === selectedRelation)["target_classes"];

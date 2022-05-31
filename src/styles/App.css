@@ -44,7 +44,7 @@
     color: black;
     z-index: 1000;
     border-radius: 8px;
-    width: 300px;
+    width: 350px;
     font-size: 14px;
     padding: 2px;
     font-weight: bold;
@@ -75,7 +75,7 @@
 .context-menu .context-menu__item:first-child {
     padding-top: 10px;
     font-size: 16px;
-    height: 28px;
+    height: 30px;
 }
 
 .context-menu .context-menu__item:hover {

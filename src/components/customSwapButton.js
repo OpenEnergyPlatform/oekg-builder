@@ -18,11 +18,11 @@ export default function ColorToggleButton(props) {
       value={alignment}
       exclusive
       onChange={handleChange}
-      size="small"
+      size="large"
       style={{ 'marginTop': '15px' }}>
     >
-      <ToggleButton value="playground" style={{ 'textTransform': 'none' }}> <BubbleChartIcon /> Playground</ToggleButton>
       <ToggleButton value="wizard" style={{ 'textTransform': 'none' }}> <AutoFixHighIcon /> Wizard</ToggleButton>
+      <ToggleButton value="playground" style={{ 'textTransform': 'none' }}> <BubbleChartIcon /> Playground</ToggleButton>
     </ToggleButtonGroup>
   );
 }
