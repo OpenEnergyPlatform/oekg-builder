@@ -22,6 +22,6 @@ After running the above commands, you should be able to (automatically) see the 
 Depending on your operating system, you may neet to upgrade your NodeJS and npm installations.
 It is recommended to have NodeJS >= 14.0.0 and NPM >= 5.6
 
-[Upgrade NodeJS] (https://phoenixnap.com/kb/update-node-js-version)
+[Upgrade NodeJS](https://phoenixnap.com/kb/update-node-js-version)
 
-[Upgrade npm] (https://docs.npmjs.com/try-the-latest-stable-version-of-npm)
+[Upgrade npm](https://docs.npmjs.com/try-the-latest-stable-version-of-npm)
