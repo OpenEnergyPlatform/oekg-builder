@@ -18,7 +18,8 @@ The oekg-builder, provides a simple way for OEP users to make RDF-based factshee
 
 After running the above commands, you should be able to (automatically) see the tool in your brower. Here are some [screenshots](https://github.com/OpenEnergyPlatform/oekg-builder/issues/4)  from the current version of the tool.
 
-** Note:
+**Note:
+
 Depending on your operating system, you may neet to upgrade your NodeJS and npm installations.
 It is recommended to have NodeJS >= 14.0.0 and NPM >= 5.6
 
