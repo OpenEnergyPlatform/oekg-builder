@@ -18,7 +18,7 @@ The oekg-builder, provides a simple way for OEP users to make RDF-based factshee
 
 After running the above commands, you should be able to (automatically) see the tool in your brower. 
 
-**Note:** You may neet to upgrade your NodeJS and npm installations.
+**Note:** You may need to upgrade your NodeJS and npm installations.
 It is recommended to have NodeJS >= 14.0.0 and NPM >= 5.6
 
 upgrade [Node.JS](https://phoenixnap.com/kb/update-node-js-version) - [NPM](https://docs.npmjs.com/try-the-latest-stable-version-of-npm)
