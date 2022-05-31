@@ -14,6 +14,7 @@ The oekg-builder, provides a simple way for OEP users to make RDF-based factshee
     npm start
 
 After running the above commands, you should be able to (automatically) see the tool in your brower. 
+
 **Note:** You may need to upgrade your NodeJS and npm installations.
 It is recommended to have NodeJS >= 14.0.0 and NPM >= 5.6
 
