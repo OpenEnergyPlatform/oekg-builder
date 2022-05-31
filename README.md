@@ -4,9 +4,9 @@ The oekg-builder, provides a simple way for OEP users to make RDF-based factshee
 
 1- Install npm:
 
-- On linux: `sudo apt install npm`
-- On MacOS: `brew install node`
-- On windows see [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+- on linux: `sudo apt install npm`
+- on MacOS: `brew install node`
+- on windows see [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 
 2-  Clone the repository and run the following commands:
 
