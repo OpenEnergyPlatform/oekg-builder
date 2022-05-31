@@ -26,7 +26,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TreeItem from '@mui/lab/TreeItem';
 
-import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 import useMouse from '@react-hook/mouse-position';
 
@@ -190,7 +189,6 @@ function Factsheet(props) {
 
   const searchHandler = (event) => {
       const foundNode = oekg.nodes.find(entry => entry.name === event);
-      setCurrentNode(foundNode);
 
       const distance = 20;
       const distRatio = 1 + distance/Math.hypot(foundNode.x, foundNode.y, foundNode.z);
@@ -200,7 +198,7 @@ function Factsheet(props) {
       foundNode.y,
       200
       );
-      fgRef.current.zoom(20, 200);
+      fgRef.current.zoom(10, 200);
 
       setNodeContextVisibility(false);
       setLinkContextVisibility(false);
@@ -209,11 +207,11 @@ function Factsheet(props) {
 
   const resetView = () => {
     fgRef.current.centerAt(
-    0,
-    0,
+    150,
+    10,
     200
     );
-    fgRef.current.zoom(4, 200);
+    fgRef.current.zoom(5, 200);
   };
 
   const handleSwap = (mode) => {
@@ -295,7 +293,8 @@ function Factsheet(props) {
     const useStyles = makeStyles({
       label: {
         color: "#1a5590",
-        fontWeight: "bold !important"
+        fontWeight: "bold !important",
+        fontSize: "18px !important"
       }
     });
     const classes = useStyles();
