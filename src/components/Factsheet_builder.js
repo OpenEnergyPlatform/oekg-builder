@@ -70,7 +70,6 @@ function Factsheet(props) {
   const [enablePlaygroundMode, setEnablePlaygroundMode] = React.useState(true);
   const theme = useTheme();
 
-
   const label_checkbox = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
   const handleNewLabelChange = (event) => {
@@ -339,9 +338,26 @@ function Factsheet(props) {
       setCooldownTicks(1000);
     }
 
+    const sectors = [
+      { title: 'Agriculture, forestry and land use sector', class: 123 },
+      { title: 'Energy demand sector', class: 123 },
+      { title: 'Energy transformation sector', class: 123 },
+      { title: 'Industry sector', class: 123 },
+      { title: 'Waste and wastewater sector', class: 123 },
+    ];
+
+    const authors = [
+      { title: 'Lüdwig', class: 123 },
+      { title: 'Chris', class: 123 },
+      { title: 'Hana', class: 123 },
+      { title: 'Mirjam', class: 123 },
+      { title: 'Lukas', class: 123 },
+    ];
+
     React.useEffect(() => {
         prepareData();
     },  [loading]);
+
 
     return (
       <div >
@@ -711,8 +727,8 @@ function Factsheet(props) {
                         </Grid>
                         <Grid item xs={10}>
                           <CustomTabs
-                            items={['Funding source', 'Authors', 'Analysis scope', 'Sectors', 'Region', 'Energy carriers', 'Scenarios', 'Publications' ]}
-                            tabsContent={['Funding source', 'Authors', 'Analysis scope', <CustomAutocomplete />, 'Region', 'Energy carriers', 'Scenarios', 'Publications' ]}
+                            items={['Funding source', 'Authors', 'Analysis scope', 'Sectors', 'Regions', 'Energy carriers', 'Scenarios', 'Models', 'Frameworks', 'Inputs', 'Outputs', 'Publications' ]}
+                            tabsContent={['Funding source', <CustomAutocomplete optionsSet={authors} kind='author'/>, 'Analysis scope', <CustomAutocomplete optionsSet={sectors} kind='sector'/>, 'Regions', 'Energy carriers', 'Scenarios', 'Models', 'Frameworks', 'Inputs', 'Outputs', 'Publications' ]}
                             />
                         </Grid>
                         <Grid item xs={1}>

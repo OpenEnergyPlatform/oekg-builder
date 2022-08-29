@@ -11,11 +11,12 @@ import Chip from '@mui/material/Chip';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-export default function CustomAutocomplete() {
+export default function CustomAutocomplete(selection) {
   const [value, setValue] = React.useState([]);
   const onDelete = (title) => () => {
     setValue((value) => value.filter((v) => v.title !== title));
   };
+  const params = selection.optionsSet;
   return (
     <Box sx={{ width: "%80" }}>
       <Autocomplete
@@ -39,8 +40,9 @@ export default function CustomAutocomplete() {
         value={value}
         onChange={(e, newValue) => setValue(newValue)}
         renderTags={() => null}
+        isOptionEqualToValue={(option, value) => option.title === value.title}
         renderInput={(params) => (
-          <TextField {...params} label="Select sectors" placeholder="Sectors" />
+          <TextField {...params} label={'Select ' + selection.kind} placeholder="Sectors" />
         )}
       />
       <Box
@@ -57,11 +59,3 @@ export default function CustomAutocomplete() {
     </Box>
   );
 }
-
-const params = [
-  { title: 'Agriculture, forestry and land use sector', class: 123 },
-  { title: 'Energy demand sector', class: 123 },
-  { title: 'Energy transformation sector', class: 123 },
-  { title: 'Industry sector', class: 123 },
-  { title: 'Waste and wastewater sector', class: 123 },
-];
