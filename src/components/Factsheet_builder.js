@@ -31,9 +31,13 @@ import useMouse from '@react-hook/mouse-position';
 
 import CustomSearchInput from "./customSearchInput.js";
 import CustomSwap from './customSwapButton.js';
+import CustomAutocomplete from './customAutocomplete.js';
+import CustomTabs from './customTabs.js';
 import '../styles/App.css';
 
 import OEKG_Schema from "../data/oekg-schema.json";
+import Checkbox from '@mui/material/Checkbox';
+
 
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 
@@ -65,6 +69,9 @@ function Factsheet(props) {
   const [loading, setLoading] = React.useState(false);
   const [enablePlaygroundMode, setEnablePlaygroundMode] = React.useState(true);
   const theme = useTheme();
+
+
+  const label_checkbox = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
   const handleNewLabelChange = (event) => {
     setNewLabel(event.target.value);
@@ -702,130 +709,11 @@ function Factsheet(props) {
                       <Grid container spacing={2} >
                         <Grid item xs={1}>
                         </Grid>
-                        <Grid item xs={3}>
-                          <Paper style={{ 'margin': '10px' }}>
-                            <TreeView
-                              aria-label="rich object"
-                              defaultCollapseIcon={<ExpandMoreIcon />}
-                              defaultExpanded={[]}
-                              defaultExpandIcon={<ChevronRightIcon />}
-                              sx={{ height: "740px", flexGrow: 1, overflow: 'auto' }}
-                              onNodeSelect={handleTreeViewSelect}
-                            >
-                              {renderTree(treeViewData)}
-                            </TreeView>
-                          </Paper>
-                        </Grid>
-                        <Grid item xs={7}>
-                          {
-                            <Paper style={{ 'margin': '5px', "height": "700px", "padding": "20px"  }}>
-                              <Grid container spacing={0}  >
-                                <Grid item xs={8}>
-                                  <Typography variant="subtitle2" gutterBottom component="div">
-                                  <div><span> <b>Definition:</b> </span> {currentNode.definition} </div>
-                                  </Typography>
-                                  <Typography variant="subtitle2" gutterBottom component="div">
-                                    <div><span> <b>Class:</b> </span> <a href={'https://openenergy-platform.org/ontology/oeo/' + String(currentNode.class).replace(':', '_')} >{currentNode.class}</a></div>
-                                  </Typography>
-                                  <Typography variant="subtitle2" gutterBottom component="div">
-                                    <div><span> <b>Type:</b> </span> {currentNode.name}</div>
-                                  </Typography>
-                                </Grid>
-                                <Grid item xs={4} >
-                                  <Typography variant="subtitle2" gutterBottom component="div">
-                                      <div>
-                                        <span> Relation: </span>
-                                        <Select
-                                          labelId="demo-simple-select-standard-label"
-                                          id="demo-simple-select-standard"
-                                          value={selectedRelation}
-                                          onChange={handleRelationChange}
-                                          label="Age"
-                                          style= {{ 'width': '220px', 'height': '30px' }}
-                                        >
-                                          {
-                                            relations.map((el, idx)  =>
-                                              {
-                                                  if (currentNode !== false) {
-                                                    let current_node_info = OEKG_Schema.find(el => el.class === currentNode.class);
-                                                    const element = current_node_info.relations.find(entry => entry.relation_type === el)["relation_label"];
-                                                    return (<MenuItem key={idx} value={el} > {element !== undefined ? element : el} </MenuItem>)
-                                                  }
-                                              }
-                                          )}
-                                        </Select>
-                                      </div>
-                                    </Typography>
-                                    <Typography variant="subtitle2" gutterBottom component="div">
-                                      <div>
-                                          <span> Concept: </span>
-                                          <Select
-                                            labelId="demo-simple-select-standard-label"
-                                            id="demo-simple-select-standard"
-                                            value={selectedConcept}
-                                            onChange={handleConceptChange}
-                                            label="Age"
-                                            style= {{ 'width': '220px', 'height': '30px' }}
-                                          >
-                                            {concepts.map((el, idx)  =>
-                                              {
-                                                let current_node_info = OEKG_Schema.find( el => el.class === currentNode.class);
-                                                let element = "";
-                                                if(selectedRelation !== "") {
-                                                  let target_classes = current_node_info.relations.find(entry => entry.relation_type === selectedRelation)["target_classes"];
-                                                  element = target_classes.find(entry => entry.label === el.label);
-                                                }
-                                                return (<MenuItem key={idx} value={el} > {element !== undefined ? element.label : ""} </MenuItem>)
-                                              }
-                                            )}
-                                          </Select>
-                                      </div>
-                                    </Typography>
-                                    <Typography variant="subtitle2" gutterBottom component="div">
-                                      <TextField id="outlined-basic" label="Label" variant="outlined" style= {{ 'width': '285px' }}
-                                        size="small" variant="standard" onChange={handleNewLabelChange}/>
-                                    </Typography>
-                                     <Fab color="primary"
-                                          style={{ 'textTransform': 'none',  'marginRight': '70px', 'marginTop': '5px', 'float': 'right' }}
-                                          size="small"
-                                          disabled={factHasLabel}
-                                          onClick={handleWizardAddFact}>
-                                      <AddIcon />
-                                    </Fab>
-                                </Grid>
-                                <Grid item xs={12} style={{ "borderTop": "1px solid rgba(0, 0, 0, 0.5", "marginTop": "20px" }}>
-                                    <Typography variant="subtitle1" gutterBottom component="div">
-                                      <div style={{ "marginTop": "20px" }}>
-                                        <span> <b> Label: </b> </span>
-                                        <span>
-                                          <TextField id="outlined-basic" value={currentNode.id}  variant="standard" style= {{ 'width': '30%' }} onChange={handleNewLabelChange}/>
-                                          <Button  color="primary"
-                                            style={{ 'marginLeft': '5px',  }}
-                                            variant="outlined"
-                                            onClick={() => {
-                                          }}>
-                                            <ModeEditIcon />
-                                          </Button>
-                                        </span>
-                                      </div>
-                                      <div style={{ "marginTop": "20px" }}>
-                                        <span> <b> URL: </b> </span>
-                                        <span>
-                                          <TextField id="outlined-basic" value={"https://openenergy-platform.org"}  variant="standard" style= {{ 'width': '30%' }} />
-                                          <Button  color="primary"
-                                            style={{ 'marginLeft': '5px',  }}
-                                            variant="outlined"
-                                            onClick={() => {
-                                          }}>
-                                            <ModeEditIcon />
-                                          </Button>
-                                        </span>
-                                      </div>
-                                    </Typography>
-                              </Grid>
-                              </Grid>
-                            </Paper>
-                          }
+                        <Grid item xs={10}>
+                          <CustomTabs
+                            items={['Funding source', 'Authors', 'Analysis scope', 'Sectors', 'Region', 'Energy carriers', 'Scenarios', 'Publications' ]}
+                            tabsContent={['Funding source', 'Authors', 'Analysis scope', <CustomAutocomplete />, 'Region', 'Energy carriers', 'Scenarios', 'Publications' ]}
+                            />
                         </Grid>
                         <Grid item xs={1}>
                         </Grid>
