@@ -27,13 +27,11 @@ function App() {
             <Grid item xs={2}>
             </Grid>
             <Grid item xs={3}>
-              <CustomCard top_img="kg-card-8.jpeg" title="Ontology" create_new_button={false} />
             </Grid>
             <Grid item xs={3}>
               <CustomCard top_img="kg-card-6.png" title="Factsheets" create_new={handleNewFactsheet} create_new_button={true} />
             </Grid>
             <Grid item xs={3}>
-              <CustomCard top_img="kg-card-9.jpeg" title="Bundles" create_new_button={true}/>
             </Grid>
             <Grid item xs={2}>
             </Grid>
