@@ -372,7 +372,7 @@ function Factsheet(props) {
     const renderFactsheet = (factsheetContent) => {
       if (Object.keys(factsheetContent).length !== 0) {
         return Object.keys(factsheetContent).map((item) => (
-          <div style={{ marginTop: '50px', marginLeft: '50px', marginBottom: '10px' }}>
+          <div style={{ marginTop: '30px', marginLeft: '50px', marginBottom: '10px' }}>
              <b> {item.charAt(0).toUpperCase() + item.slice(1)} </b>
              {
                factsheetContent[item].map((v) => (
@@ -391,6 +391,7 @@ function Factsheet(props) {
 
     const [selectedSectors, setSelectedSectors] = useState([]);
     const [selectedAuthors, setSelectedAuthors] = useState([]);
+    const [selectedFundingSource, setSelectedFundingSource] = useState([]);
 
     const sectors = [
       { title: 'Agriculture, forestry and land use sector', class: 123 },
@@ -413,6 +414,11 @@ function Factsheet(props) {
       { title: 'Jonas', class: 123 },
     ];
 
+    const funding_source = [
+      { title: 'PTJ', class: 123 },
+      { title: 'RLI', class: 123 },
+    ];
+
     const sectorsHandler = (sectorsList) => {
       setSelectedSectors(sectorsList);
       factsheetObjectHandler('sectors', sectorsList);
@@ -423,12 +429,17 @@ function Factsheet(props) {
       factsheetObjectHandler('authors', authorsList);
     };
 
+    const fundingSourceHandler = (authorsList) => {
+      setSelectedFundingSource(authorsList);
+      factsheetObjectHandler('funding_source', authorsList);
+    };
+
 
     const items = {
-      titles: ['Funding source', 'Authors', 'Analysis scope', 'Sectors', 'Regions', 'Energy carriers', 'Scenarios', 'Models', 'Frameworks', 'Inputs', 'Outputs', 'Publications' ],
-      contents: ['Funding source',
+      titles: ['Funding source', 'Authors', 'Sectors', 'Regions', 'Energy carriers', 'Scenarios', 'Models', 'Frameworks', 'Inputs', 'Outputs', 'Publications' ],
+      contents: [
+        <CustomAutocomplete optionsSet={funding_source} kind='funding source' handler={fundingSourceHandler} selectedElements={selectedFundingSource}/>,
         <CustomAutocomplete optionsSet={authors} kind='author' handler={authorsHandler} selectedElements={selectedAuthors}/>,
-        'Analysis scope',
         <CustomAutocomplete optionsSet={sectors} kind='sector' handler={sectorsHandler} selectedElements={selectedSectors}/>,
         'Regions', 'Energy carriers', 'Scenarios', 'Models',
         'Frameworks', 'Inputs', 'Outputs',
@@ -441,30 +452,11 @@ function Factsheet(props) {
     return (
       <div >
         <Grid container spacing={2} >
-          <Grid item xs={5} >
-            <CustomSearchInput searchHandler={searchHandler} data={oekg.nodes} />
-          </Grid>
-          <Grid item xs={3} >
+          <Grid item xs={8} >
           <div>
              {enablePlaygroundMode &&
                <CustomSwap handleSwap={handleSwap} />
              }
-            {
-              <ButtonGroup
-                 disableElevation
-                 variant="contained"
-                 aria-label="Disabled elevation buttons"
-               >
-                 {mode === "playground" && <IconButton
-                   component="label"
-                   size="large"
-                   style={{ 'textTransform': 'none', 'zIndex': '1000', 'marginTop': '-15px', 'marginLeft': '2%', 'zIndex': '1000', 'height': '55px'}}
-                   onClick={resetView}
-                   >
-                   <CenterFocusWeakIcon />
-                 </IconButton>}
-               </ButtonGroup>
-            }
           </div >
           </Grid>
           <Grid item xs={4} >
@@ -710,9 +702,14 @@ function Factsheet(props) {
                 </div>
               </div>}
 
-              {mode === "playground" && <ForceGraph2D
+              {mode === "playground" &&
+              <div>
+                <div style= {{ textAlign: 'center' }}>
+                  <CustomSearchInput searchHandler={searchHandler} data={oekg.nodes} />
+                </div>
+              <ForceGraph2D
                 width= {window.innerWidth  }
-                height= {window.innerHeight / 1.1}
+                height= {window.innerHeight / 1.2}
                 backgroundColor={"rgba(255, 255, 255"}
                 graphData={oekg}
                 nodeOpacity={1}
@@ -817,7 +814,10 @@ function Factsheet(props) {
                     onLinkRightClick={link => handleLinkRightClick(link)}
                     linkHoverPrecision={70}
                     cooldownTicks={cooldownTicks}
-                />}
+                />
+                </div>
+
+              }
 
                 {mode === "wizard" &&
                   <div className='wizard'>

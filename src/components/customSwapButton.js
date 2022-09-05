@@ -20,7 +20,7 @@ export default function ColorToggleButton(props) {
       exclusive
       onChange={handleChange}
       size="large"
-      style={{ 'marginTop': '15px' }}>
+      style={{ 'marginTop': '15px', 'marginLeft': '150px'}}>
     >
       <ToggleButton value="wizard" style={{ 'textTransform': 'none' }}> <ListAltIcon /> Factsheet</ToggleButton>
       <ToggleButton value="overview" style={{ 'textTransform': 'none' }}> <FactCheckOutlinedIcon /> Overview</ToggleButton>
