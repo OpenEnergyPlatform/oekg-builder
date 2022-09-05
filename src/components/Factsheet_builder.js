@@ -5,6 +5,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
@@ -17,6 +19,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import CenterFocusWeakIcon from '@mui/icons-material/CenterFocusWeak';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import FactCheckOutlinedIcon from '@mui/icons-material/FactCheckOutlined';
+
+
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
@@ -34,6 +39,9 @@ import CustomSwap from './customSwapButton.js';
 import CustomTabs from './customTabs.js';
 import '../styles/App.css';
 
+import CustomAutocomplete from './customAutocomplete.js';
+
+
 import OEKG_Schema from "../data/oekg-schema.json";
 import Checkbox from '@mui/material/Checkbox';
 
@@ -46,6 +54,7 @@ function Factsheet(props) {
 
   const [open, setOpen] = useState(false);
   const [openJSON, setOpenJSON] = useState(false);
+  const [openOverView, setOpenOverView] = useState(false);
   const [openTurtle, setOpenTurtle] = useState(false);
   const [oekg, setOekg] = useState(graphData);
   const [relations, setRelations] = useState([""]);
@@ -220,6 +229,14 @@ function Factsheet(props) {
     fgRef.current.zoom(5, 200);
   };
 
+  const showOverview = () => {
+    setOpenOverView(true);
+  };
+
+  const handleCloseOverView = () => {
+    setOpenOverView(false);
+  };
+
   const handleSwap = (mode) => {
     setMode(mode);
     if (mode === "wizard") {
@@ -231,6 +248,9 @@ function Factsheet(props) {
           let current_node_relations = current_node_info["relations"].map(el => el.relation_type);
           setRelations(current_node_relations);
         }
+    }
+    else if (mode === "overview") {
+        setOpenOverView(true);
     } else {
       setCooldownTicks(1000);
     }
@@ -348,6 +368,76 @@ function Factsheet(props) {
       setFactsheetObject(newFactsheetObject);
     }
 
+
+    const renderFactsheet = (factsheetContent) => {
+      if (Object.keys(factsheetContent).length !== 0) {
+        return Object.keys(factsheetContent).map((item) => (
+          <div style={{ marginTop: '50px', marginLeft: '50px', marginBottom: '10px' }}>
+             <b> {item.charAt(0).toUpperCase() + item.slice(1)} </b>
+             {
+               factsheetContent[item].map((v) => (
+
+                   <div style={{ marginLeft: '25px' }}>
+                    <span> {v.title} </span>
+                   </div>
+             ))
+           }
+          </div>
+        ))
+      }
+    }
+
+
+
+    const [selectedSectors, setSelectedSectors] = useState([]);
+    const [selectedAuthors, setSelectedAuthors] = useState([]);
+
+    const sectors = [
+      { title: 'Agriculture, forestry and land use sector', class: 123 },
+      { title: 'Energy demand sector', class: 123 },
+      { title: 'Energy transformation sector', class: 123 },
+      { title: 'Industry sector', class: 123 },
+      { title: 'Waste and wastewater sector', class: 123 },
+    ];
+
+    const authors = [
+      { title: 'Lüdwig', class: 123 },
+      { title: 'Chris', class: 123 },
+      { title: 'Hana', class: 123 },
+      { title: 'Mirjam', class: 123 },
+      { title: 'Lukas', class: 123 },
+      { title: 'Alex', class: 123 },
+      { title: 'Markus', class: 123 },
+      { title: 'Martin', class: 123 },
+      { title: 'Adel', class: 123 },
+      { title: 'Jonas', class: 123 },
+    ];
+
+    const sectorsHandler = (sectorsList) => {
+      setSelectedSectors(sectorsList);
+      factsheetObjectHandler('sectors', sectorsList);
+    };
+
+    const authorsHandler = (authorsList) => {
+      setSelectedAuthors(authorsList);
+      factsheetObjectHandler('authors', authorsList);
+    };
+
+
+    const items = {
+      titles: ['Funding source', 'Authors', 'Analysis scope', 'Sectors', 'Regions', 'Energy carriers', 'Scenarios', 'Models', 'Frameworks', 'Inputs', 'Outputs', 'Publications' ],
+      contents: ['Funding source',
+        <CustomAutocomplete optionsSet={authors} kind='author' handler={authorsHandler} selectedElements={selectedAuthors}/>,
+        'Analysis scope',
+        <CustomAutocomplete optionsSet={sectors} kind='sector' handler={sectorsHandler} selectedElements={selectedSectors}/>,
+        'Regions', 'Energy carriers', 'Scenarios', 'Models',
+        'Frameworks', 'Inputs', 'Outputs',
+        'Publications' ]
+    }
+
+
+
+
     return (
       <div >
         <Grid container spacing={2} >
@@ -359,7 +449,22 @@ function Factsheet(props) {
              {enablePlaygroundMode &&
                <CustomSwap handleSwap={handleSwap} />
              }
-            {mode === "playground" && <Button disableElevation={true} startIcon={<CenterFocusWeakIcon />} size="large" style={{ 'textTransform': 'none', 'zIndex': '1000', 'marginTop': '-15px', 'marginLeft': '2%', 'zIndex': '1000', 'height': '55px'}} variant="outlined" color="primary" onClick={resetView} >Fix </Button>}
+            {
+              <ButtonGroup
+                 disableElevation
+                 variant="contained"
+                 aria-label="Disabled elevation buttons"
+               >
+                 {mode === "playground" && <IconButton
+                   component="label"
+                   size="large"
+                   style={{ 'textTransform': 'none', 'zIndex': '1000', 'marginTop': '-15px', 'marginLeft': '2%', 'zIndex': '1000', 'height': '55px'}}
+                   onClick={resetView}
+                   >
+                   <CenterFocusWeakIcon />
+                 </IconButton>}
+               </ButtonGroup>
+            }
           </div >
           </Grid>
           <Grid item xs={4} >
@@ -426,6 +531,8 @@ function Factsheet(props) {
                 </Button>
               </DialogActions>
             </Dialog>
+
+
 
             <Dialog
               fullWidth
@@ -720,7 +827,24 @@ function Factsheet(props) {
                         <Grid item xs={10}>
                           <CustomTabs
                             factsheetObjectHandler={factsheetObjectHandler}
+                            items={items}
                               />
+                        </Grid>
+                        <Grid item xs={1}>
+                        </Grid>
+                      </Grid>
+                  </div>
+                }
+
+                {mode === "overview" &&
+                  <div className='wizard'>
+                      <Grid container spacing={2} >
+                        <Grid item xs={1}>
+                        </Grid>
+                        <Grid item xs={10}>
+                          <div>
+                            {renderFactsheet(factsheetObject)}
+                          </div>
                         </Grid>
                         <Grid item xs={1}>
                         </Grid>

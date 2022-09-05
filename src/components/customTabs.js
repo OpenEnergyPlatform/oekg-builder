@@ -4,7 +4,6 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-import CustomAutocomplete from './customAutocomplete.js';
 
 
 interface TabPanelProps {
@@ -13,26 +12,7 @@ interface TabPanelProps {
   value: number;
 }
 
-const sectors = [
-  { title: 'Agriculture, forestry and land use sector', class: 123 },
-  { title: 'Energy demand sector', class: 123 },
-  { title: 'Energy transformation sector', class: 123 },
-  { title: 'Industry sector', class: 123 },
-  { title: 'Waste and wastewater sector', class: 123 },
-];
 
-const authors = [
-  { title: 'Lüdwig', class: 123 },
-  { title: 'Chris', class: 123 },
-  { title: 'Hana', class: 123 },
-  { title: 'Mirjam', class: 123 },
-  { title: 'Lukas', class: 123 },
-  { title: 'Alex', class: 123 },
-  { title: 'Markus', class: 123 },
-  { title: 'Martin', class: 123 },
-  { title: 'Adel', class: 123 },
-  { title: 'Jonas', class: 123 },
-];
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
@@ -61,31 +41,11 @@ function arrayProps(index: number) {
 }
 
 export default function CustomTabs(props) {
-  const { factsheetObjectHandler } = props;
+  const { factsheetObjectHandler, items } = props;
   const [value, setValue] = useState(0);
-  const [selectedSectors, setSelectedSectors] = useState([]);
-  const [selectedAuthors, setSelectedAuthors] = useState([]);
 
-  const sectorsHandler = (sectorsList) => {
-    setSelectedSectors(sectorsList);
-    factsheetObjectHandler('sectors', sectorsList);
-  };
 
-  const authorsHandler = (authorsList) => {
-    setSelectedAuthors(authorsList);
-    factsheetObjectHandler('authors', authorsList);
-  };
 
-  const items = {
-    titles: ['Funding source', 'Authors', 'Analysis scope', 'Sectors', 'Regions', 'Energy carriers', 'Scenarios', 'Models', 'Frameworks', 'Inputs', 'Outputs', 'Publications' ],
-    contents: ['Funding source',
-      <CustomAutocomplete optionsSet={authors} kind='author' handler={authorsHandler} selectedElements={selectedAuthors}/>,
-      'Analysis scope',
-      <CustomAutocomplete optionsSet={sectors} kind='sector' handler={sectorsHandler} selectedElements={selectedSectors}/>,
-      'Regions', 'Energy carriers', 'Scenarios', 'Models',
-      'Frameworks', 'Inputs', 'Outputs',
-      'Publications' ]
-  }
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
