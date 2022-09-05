@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import Grid from '@mui/material/Grid';
 import MenuItem from '@mui/material/MenuItem';
@@ -31,7 +31,6 @@ import useMouse from '@react-hook/mouse-position';
 
 import CustomSearchInput from "./customSearchInput.js";
 import CustomSwap from './customSwapButton.js';
-import CustomAutocomplete from './customAutocomplete.js';
 import CustomTabs from './customTabs.js';
 import '../styles/App.css';
 
@@ -45,29 +44,30 @@ function Factsheet(props) {
   const { useRef } = React;
   const { graphData } = props;
 
-  const [open, setOpen] = React.useState(false);
-  const [openJSON, setOpenJSON] = React.useState(false);
-  const [openTurtle, setOpenTurtle] = React.useState(false);
-  const [oekg, setOekg] = React.useState(graphData);
-  const [relations, setRelations] = React.useState([""]);
-  const [concepts, setConcepts] = React.useState([""]);
-  const [nodeContextIsVisible, setNodeContextVisibility ] = React.useState(false);
-  const [linkContextIsVisible, setLinkContextVisibility ] = React.useState(false);
-  const [currentLink, setCurrentLink ] = React.useState(false);
-  const [currentNode, setCurrentNode ] = React.useState(false);
-  const [selectedRelation, setSelectedRelation ] = React.useState("");
-  const [selectedConcept, setSelectedConcept ] = React.useState("");
-  const [newLabel, setNewLabel ] = React.useState("");
-  const [updatedLabel, setUpdatedLabel ] = React.useState("");
-  const [factHasLabel, setFactHasLabel ] = React.useState(true);
-  const [x, setX] = React.useState(0);
-  const [y, setY] = React.useState(0);
-  const [cooldownTicks, setCooldownTicks] = React.useState(1000);
-  const [mode, setMode] = React.useState("wizard");
-  const [treeViewData, setTreeViewData] = React.useState({});
-  const [expanded, setExpanded] = React.useState(["study"]);
-  const [loading, setLoading] = React.useState(false);
-  const [enablePlaygroundMode, setEnablePlaygroundMode] = React.useState(true);
+  const [open, setOpen] = useState(false);
+  const [openJSON, setOpenJSON] = useState(false);
+  const [openTurtle, setOpenTurtle] = useState(false);
+  const [oekg, setOekg] = useState(graphData);
+  const [relations, setRelations] = useState([""]);
+  const [concepts, setConcepts] = useState([""]);
+  const [nodeContextIsVisible, setNodeContextVisibility ] = useState(false);
+  const [linkContextIsVisible, setLinkContextVisibility ] = useState(false);
+  const [currentLink, setCurrentLink ] = useState(false);
+  const [currentNode, setCurrentNode ] = useState(false);
+  const [selectedRelation, setSelectedRelation ] = useState("");
+  const [selectedConcept, setSelectedConcept ] = useState("");
+  const [newLabel, setNewLabel ] = useState("");
+  const [updatedLabel, setUpdatedLabel ] = useState("");
+  const [factHasLabel, setFactHasLabel ] = useState(true);
+  const [x, setX] = useState(0);
+  const [y, setY] = useState(0);
+  const [cooldownTicks, setCooldownTicks] = useState(1000);
+  const [mode, setMode] = useState("wizard");
+  const [treeViewData, setTreeViewData] = useState({});
+  const [expanded, setExpanded] = useState(["study"]);
+  const [loading, setLoading] = useState(false);
+  const [enablePlaygroundMode, setEnablePlaygroundMode] = useState(true);
+  const [factsheetObject, setFactsheetObject] = useState({});
   const theme = useTheme();
 
   const label_checkbox = { inputProps: { 'aria-label': 'Checkbox demo' } };
@@ -213,7 +213,7 @@ function Factsheet(props) {
 
   const resetView = () => {
     fgRef.current.centerAt(
-    150,
+    10,
     10,
     200
     );
@@ -338,26 +338,15 @@ function Factsheet(props) {
       setCooldownTicks(1000);
     }
 
-    const sectors = [
-      { title: 'Agriculture, forestry and land use sector', class: 123 },
-      { title: 'Energy demand sector', class: 123 },
-      { title: 'Energy transformation sector', class: 123 },
-      { title: 'Industry sector', class: 123 },
-      { title: 'Waste and wastewater sector', class: 123 },
-    ];
-
-    const authors = [
-      { title: 'Lüdwig', class: 123 },
-      { title: 'Chris', class: 123 },
-      { title: 'Hana', class: 123 },
-      { title: 'Mirjam', class: 123 },
-      { title: 'Lukas', class: 123 },
-    ];
-
-    React.useEffect(() => {
+    useEffect(() => {
         prepareData();
     },  [loading]);
 
+    const factsheetObjectHandler = (key, obj) => {
+      let newFactsheetObject = factsheetObject;
+      newFactsheetObject[key] = obj
+      setFactsheetObject(newFactsheetObject);
+    }
 
     return (
       <div >
@@ -370,7 +359,7 @@ function Factsheet(props) {
              {enablePlaygroundMode &&
                <CustomSwap handleSwap={handleSwap} />
              }
-            {mode === "playground" && <Button disableElevation={true} startIcon={<CenterFocusWeakIcon />} size="large" style={{ 'textTransform': 'none', 'zIndex': '1000', 'marginTop': '-15px', 'marginLeft': '2%', 'zIndex': '1000', 'height': '55px'}} variant="outlined" color="primary" onClick={resetView} >View all</Button>}
+            {mode === "playground" && <Button disableElevation={true} startIcon={<CenterFocusWeakIcon />} size="large" style={{ 'textTransform': 'none', 'zIndex': '1000', 'marginTop': '-15px', 'marginLeft': '2%', 'zIndex': '1000', 'height': '55px'}} variant="outlined" color="primary" onClick={resetView} >Fix </Button>}
           </div >
           </Grid>
           <Grid item xs={4} >
@@ -422,7 +411,10 @@ function Factsheet(props) {
               </DialogTitle>
               <DialogContent>
                 <DialogContentText>
-                  <div><pre>{JSON.stringify(oekg, null, '\t')}</pre></div>
+                  <div>
+                    <pre>{JSON.stringify(oekg, null, '\t')}</pre>
+                    <pre>{JSON.stringify({factsheetObject}, null, '\t')}</pre>
+                  </div>
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
@@ -727,9 +719,8 @@ function Factsheet(props) {
                         </Grid>
                         <Grid item xs={10}>
                           <CustomTabs
-                            items={['Funding source', 'Authors', 'Analysis scope', 'Sectors', 'Regions', 'Energy carriers', 'Scenarios', 'Models', 'Frameworks', 'Inputs', 'Outputs', 'Publications' ]}
-                            tabsContent={['Funding source', <CustomAutocomplete optionsSet={authors} kind='author'/>, 'Analysis scope', <CustomAutocomplete optionsSet={sectors} kind='sector'/>, 'Regions', 'Energy carriers', 'Scenarios', 'Models', 'Frameworks', 'Inputs', 'Outputs', 'Publications' ]}
-                            />
+                            factsheetObjectHandler={factsheetObjectHandler}
+                              />
                         </Grid>
                         <Grid item xs={1}>
                         </Grid>

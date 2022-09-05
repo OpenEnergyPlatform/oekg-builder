@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -11,12 +11,20 @@ import Chip from '@mui/material/Chip';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
-export default function CustomAutocomplete(selection) {
-  const [value, setValue] = React.useState([]);
+export default function CustomAutocomplete(parameters) {
+  const [value, setValue] = useState(parameters.selectedElements);
+  const params = parameters.optionsSet;
+  const handler = parameters.handler;
+
   const onDelete = (title) => () => {
     setValue((value) => value.filter((v) => v.title !== title));
   };
-  const params = selection.optionsSet;
+
+  useEffect(()=>{
+    handler(value);
+  })
+
+
   return (
     <Box sx={{ width: "%80" }}>
       <Autocomplete
@@ -31,18 +39,18 @@ export default function CustomAutocomplete(selection) {
               icon={icon}
               checkedIcon={checkedIcon}
               style={{ marginRight: 8 }}
-              checked={selected}
+              checked={ selected }
             />
             {option.title}
           </li>
         )}
         style={{ width: '%80' }}
         value={value}
-        onChange={(e, newValue) => setValue(newValue)}
+        onChange={(e, newValue) => (setValue(newValue))}
         renderTags={() => null}
         isOptionEqualToValue={(option, value) => option.title === value.title}
         renderInput={(params) => (
-          <TextField {...params} label={'Select ' + selection.kind} placeholder="Sectors" />
+          <TextField {...params} label={'Select ' + parameters.kind} placeholder="Sectors" />
         )}
       />
       <Box

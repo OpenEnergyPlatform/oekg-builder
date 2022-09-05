@@ -54,7 +54,7 @@ export default function CustomSearchInput(props) {
       renderInput={(params) => (
         <TextField style={{ 'marginTop' : '15px',  'marginLeft' : '15px',  'margiRight' : '15px', 'margiBottom' : '30px', 'float': 'right', 'width': '80%', 'zIndex': '1000'
                            }}
-                   color="success"
+                   color="primary"
                    {...params}
                    label="Search..."
                    variant="outlined"
